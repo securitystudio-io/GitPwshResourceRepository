@@ -26,6 +26,7 @@ Import-Module ./GitPwshResourceRepository/GitPwshResourceRepository.psd1
 | Command | Purpose |
 |---|---|
 | [`Get-GitResourceRepository`](#get-gitresourcerepository) | Inspect a repository's module (name/version) without installing it |
+| [`Get-TrackedGitResourceRepository`](#get-trackedgitresourcerepository) | List the tracked git repositories |
 | [`Install-GitResourceRepository`](#install-gitresourcerepository) | Install a module straight from a git repository (and automatically track it) |
 | [`Uninstall-GitResourceRepository`](#uninstall-gitresourcerepository) | Uninstall a module from disk and remove it from the tracked list |
 | [`Add-GitResourceRepository`](#add-gitresourcerepository) | Track a repository for automatic update checks |
@@ -43,6 +44,14 @@ Get-GitResourceRepository 'https://github.com/example-org/example-module' -Verbo
 
 Accepts `-Name` instead of `-ProjectUri` to resolve an already-installed module's `ProjectUri`
 automatically. Supports `-Branch` (default `main`).
+
+### Get-TrackedGitResourceRepository
+
+Lists the repositories (and branches) tracked in the JSON store.
+
+```PowerShell
+Get-TrackedGitResourceRepository
+```
 
 ### Install-GitResourceRepository
 
@@ -108,6 +117,9 @@ By default, a tracked repository whose module isn't installed anywhere locally i
 ```PowerShell
 # Installs a module and automatically tracks it for updates
 Install-GitResourceRepository 'https://github.com/example-org/example-module'
+
+# View currently tracked repositories
+Get-TrackedGitResourceRepository
 
 # ... later, e.g. from a scheduled task ...
 # Checks all tracked modules and updates any that are out of date
