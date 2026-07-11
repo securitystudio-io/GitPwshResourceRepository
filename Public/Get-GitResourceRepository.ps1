@@ -13,7 +13,7 @@ function Get-GitResourceRepository {
     .PARAMETER Name
         One or more names of already-installed modules; their ProjectUri is looked up and used instead.
     .PARAMETER Branch
-        The branch to clone. Defaults to "master".
+        The branch to clone. Defaults to "main".
     .PARAMETER KeepTempCopy
         Keeps the cloned temp directory instead of deleting it, and returns its path via LocalPath.
         Callers that go on to install the module (Install-ModuleInfo) need this set.
@@ -28,7 +28,7 @@ function Get-GitResourceRepository {
         [string[]]$ProjectUri,
         [Parameter(Mandatory,ParameterSetName='ByName')]
         [string[]]$Name,
-        [string]$Branch = "master",
+        [string]$Branch = "main",
         [switch]$KeepTempCopy
     )
 

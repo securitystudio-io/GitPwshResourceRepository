@@ -40,7 +40,7 @@ Get-GitResourceRepository 'https://github.com/example-org/example-module' -Verbo
 ```
 
 Accepts `-Name` instead of `-ProjectUri` to resolve an already-installed module's `ProjectUri`
-automatically. Supports `-Branch` (default `master`).
+automatically. Supports `-Branch` (default `main`).
 
 ### Install-GitResourceRepository
 
@@ -60,7 +60,7 @@ Repositories already tracked (same URI and branch) are skipped rather than dupli
 stored as JSON at `D:\profile\GitResourceRepositoryRepos.json`.
 
 ```PowerShell
-Add-GitResourceRepository 'https://github.com/example-org/example-module' -Branch master
+Add-GitResourceRepository 'https://github.com/example-org/example-module' -Branch main
 Add-GitResourceRepository 'https://github.com/example-org/another-module' -Branch dev
 ```
 

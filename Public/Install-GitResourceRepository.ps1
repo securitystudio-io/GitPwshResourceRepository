@@ -10,7 +10,7 @@ function Install-GitResourceRepository {
     .PARAMETER ProjectUri
         One or more git repository URLs to install from.
     .PARAMETER Branch
-        The branch to clone. Defaults to "master".
+        The branch to clone. Defaults to "main".
     .PARAMETER DestinationPath
         Where to install the module. Defaults to a writable path already on $env:PSModulePath.
     .PARAMETER Force
@@ -26,7 +26,7 @@ function Install-GitResourceRepository {
 
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
         [string[]]$ProjectUri,
-        [string]$Branch = "master",
+        [string]$Branch = "main",
         [string]$DestinationPath = (Get-InstallPath),
         [switch]$Force
     )

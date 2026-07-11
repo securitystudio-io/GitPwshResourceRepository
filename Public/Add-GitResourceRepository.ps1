@@ -10,12 +10,12 @@ function Add-GitResourceRepository {
     .PARAMETER ProjectUri
         One or more git repository URLs to track.
     .PARAMETER Branch
-        The branch to track for each repository. Defaults to "master".
+        The branch to track for each repository. Defaults to "main".
     .PARAMETER StorePath
         Path to the JSON file the tracked list is stored in. Defaults to the module's standard
         store location (see Get-GitResourceRepositoryPath).
     .EXAMPLE
-        Add-GitResourceRepository 'https://github.com/example-org/example-module' -Branch master
+        Add-GitResourceRepository 'https://github.com/example-org/example-module' -Branch main
     #>
 
     [CmdletBinding()]
@@ -25,7 +25,7 @@ function Add-GitResourceRepository {
         [Parameter(Mandatory,ValueFromPipelineByPropertyName,Position=0)]
         [string[]]$ProjectUri,
 
-        [string]$Branch = "master",
+        [string]$Branch = "main",
 
         [string]$StorePath = (Get-GitResourceRepositoryPath)
 

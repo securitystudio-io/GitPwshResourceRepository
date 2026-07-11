@@ -14,7 +14,7 @@ function Update-GitResourceRepository {
     .PARAMETER Name
         One or more names of already-installed modules; their ProjectUri is looked up and used instead.
     .PARAMETER Branch
-        The branch to check. Defaults to "master" for explicit -ProjectUri/-Name input; repositories
+        The branch to check. Defaults to "main" for explicit -ProjectUri/-Name input; repositories
         loaded from the tracked store use the branch recorded for each of them.
     .PARAMETER DestinationPath
         Where to install an updated module. Defaults to a writable path already on $env:PSModulePath.
@@ -43,7 +43,7 @@ function Update-GitResourceRepository {
         [string[]]$ProjectUri,
         [Parameter(Mandatory,ParameterSetName='ByName')]
         [string[]]$Name,
-        [string]$Branch = "master",
+        [string]$Branch = "main",
         [string]$DestinationPath = (Get-InstallPath),
         [switch]$Force,
         [switch]$InstallMissing
