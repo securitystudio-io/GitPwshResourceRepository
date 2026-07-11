@@ -11,6 +11,7 @@ for updates in one shot.
 
 ```PowerShell
 winget install --id Git.Git -e --source winget
+winget install --id Microsoft.PowerShell -e --source winget
 ```
 
 ## Installation
