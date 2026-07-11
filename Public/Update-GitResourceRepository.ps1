@@ -117,12 +117,35 @@ function Update-GitResourceRepository {
                     Write-Error "$FunctionName cannot find local module '$ModuleName'"
                     Write-Verbose "$(Get-Date -f T)   module '$ModuleName' appears to have been uninstalled; removing from tracked list"
                     Remove-GitResourceRepository -ProjectUri $P1 -Branch $B1 -Verbose:$VerbosePreference | Out-Null
+                    if ($RemoteModuleInfo.LocalPath -and (Test-Path $RemoteModuleInfo.LocalPath)) {
+                        Remove-Item $RemoteModuleInfo.LocalPath -Recurse -Force | Out-Null
+                    }
                 }
                 continue
             }
-            if ($LocalModuleInfo.Version -ge $RemoteModuleInfo.Version) {
+            if (($LocalModuleInfo.Version -ge $RemoteModuleInfo.Version) -and !$Force) {
                 Write-Verbose "$(Get-Date -f T)   not updating module '$ModuleName', local version $($LocalModuleInfo.Version), remote version $($RemoteModuleInfo.Version)"
+                if ($RemoteModuleInfo.LocalPath -and (Test-Path $RemoteModuleInfo.LocalPath)) {
+                    Remove-Item $RemoteModuleInfo.LocalPath -Recurse -Force | Out-Null
+                }
             } else {
+                if ($Force) {
+                    Write-Verbose "$(Get-Date -f T)   removing old module version folders due to -Force"
+                    $Modules = @(
+                        (Get-Module -Name $ModuleName -ListAvailable),
+                        (Get-InstalledModule -Name $ModuleName -ErrorAction SilentlyContinue)
+                    )
+                    $DeletedPaths = @()
+                    foreach ($Mod in $Modules) {
+                        $Base = $Mod.ModuleBase
+                        if ($Base -and (Test-Path $Base)) {
+                            if ($DeletedPaths -contains $Base) {continue}
+                            Write-Verbose -Message "$(Get-Date -f T)   deleting directory $Base"
+                            Remove-Item $Base -Recurse -Force -ErrorAction SilentlyContinue
+                            $DeletedPaths += $Base
+                        }
+                    }
+                }
                 Install-ModuleInfo -ModuleInfo $RemoteModuleInfo -DestinationPath $DestinationPath -Force:$Force
             }
         }
