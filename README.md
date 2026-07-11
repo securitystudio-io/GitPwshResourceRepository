@@ -9,6 +9,10 @@ for updates in one shot.
 - PowerShell 7.0 or later
 - **Git** client installed and available on `PATH` — check with `Get-Command git`
 
+```PowerShell
+winget install --id Git.Git -e --source winget
+```
+
 ## Installation
 
 ```PowerShell
