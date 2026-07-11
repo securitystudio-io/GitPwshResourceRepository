@@ -56,7 +56,7 @@ function Get-GitResourceRepository {
 
             Write-Verbose -Message "$(Get-Date -f T)   processing $P1"
 
-            $ModuleName = ($P1 -split '/')[-1]
+            $ModuleName = ($P1 -split '[/\\]')[-1] -replace '\.git$',''
             $tempDir = Join-Path $tmpRoot $ModuleName
             if (!(Test-Path $tempDir)) {
                 Write-Verbose -Message "$(Get-Date -f T)   creating directory $tempDir"

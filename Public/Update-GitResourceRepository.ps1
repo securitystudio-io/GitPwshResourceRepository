@@ -109,9 +109,14 @@ function Update-GitResourceRepository {
             if (!$LocalModuleInfo) {
                 if ($InstallMissing) {
                     Write-Verbose "$(Get-Date -f T)   module '$ModuleName' not installed locally, installing it"
-                    Install-ModuleInfo -ModuleInfo $RemoteModuleInfo -DestinationPath $DestinationPath -Force:$Force
+                    $Result = Install-ModuleInfo -ModuleInfo $RemoteModuleInfo -DestinationPath $DestinationPath -Force:$Force
+                    if ($Result) {
+                        Add-GitResourceRepository -ProjectUri $P1 -Branch $B1 -Verbose:$VerbosePreference | Out-Null
+                    }
                 } else {
                     Write-Error "$FunctionName cannot find local module '$ModuleName'"
+                    Write-Verbose "$(Get-Date -f T)   module '$ModuleName' appears to have been uninstalled; removing from tracked list"
+                    Remove-GitResourceRepository -ProjectUri $P1 -Branch $B1 -Verbose:$VerbosePreference | Out-Null
                 }
                 continue
             }

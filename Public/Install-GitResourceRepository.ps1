@@ -56,7 +56,11 @@ function Install-GitResourceRepository {
             $ModuleInfo = Get-GitResourceRepository -ProjectUri $P1 -Branch $Branch -KeepTempCopy
             if (!$ModuleInfo -or ($ModuleInfo.Count -gt 1)) {continue} # we have the error in get-gitresourcerepository
 
-            Install-ModuleInfo -ModuleInfo $ModuleInfo -DestinationPath $DestinationPath -Force:$Force
+            $Result = Install-ModuleInfo -ModuleInfo $ModuleInfo -DestinationPath $DestinationPath -Force:$Force
+            if ($Result) {
+                # Automatically track the installed module
+                Add-GitResourceRepository -ProjectUri $P1 -Branch $Branch -Verbose:$VerbosePreference | Out-Null
+            }
         }
     }
 
