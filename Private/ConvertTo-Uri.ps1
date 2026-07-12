@@ -17,7 +17,7 @@ function ConvertTo-Uri {
             continue
         } 
 
-        if (!($Module | ? ProjectUri)) {
+        if (!($Module | Where-Object $_.ProjectUri)) {
             Write-Warning "$FunctionName found module $N1, but it has no ProjectUri information"
             continue
         }
