@@ -9,11 +9,11 @@ function Install-ModuleInfo {
     $FunctionName = $MyInvocation.MyCommand.Name
 
     # verify properties
-    if (!$ModuleInfo.Root) {
-        Write-Warning -Message "$FunctionName installing a module whose manifest is not located in the module root directory"
-    }
     if (!$ModuleInfo.SameName) {
         Write-Warning -Message "$FunctionName installing a module whose name does not match its directory name"
+    }
+    if (!$ModuleInfo.Root) {
+        Write-Verbose -Message "$FunctionName using the directory containing the manifest as the module root"
     }
 
     # check target directory
@@ -32,13 +32,21 @@ function Install-ModuleInfo {
         New-Item $TargetDir -ItemType Directory -Force | Out-Null
     }
     
-    # copy module
+    # copy module - excluding repository artifacts
     Write-Verbose -Message "$(Get-Date -f T)   installing module to $TargetDir"
     Copy-Item "$($ModuleInfo.LocalPath)/*" $TargetDir -Force -Recurse | Out-Null
-    
-    # clean up
-    $gitDir = Join-Path $TargetDir '.git'
-    if (Test-Path $gitDir) {Remove-Item $gitDir -Recurse -Force}
+
+    # clean up non-PowerShell artifacts
+    $ExcludeDirs = @('.git', '.github', '.gitignore', 'node_modules', '.vscode', '.idea', 'build', 'dist', '.env*', '*.log', '*.tmp')
+    $ExcludeDirs | ForEach-Object {
+        $path = Join-Path $TargetDir $_
+        if (Test-Path $path) {
+            Write-Verbose -Message "$(Get-Date -f T)   removing $_ from installation"
+            Remove-Item $path -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    # clean up source temp directory
     Remove-Item $ModuleInfo.LocalPath -Recurse -Force | Out-Null
     Write-Verbose -Message "$(Get-Date -f T)   module $($ModuleInfo.Name) installation completed"
 

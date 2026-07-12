@@ -8,6 +8,9 @@ function Get-GitResourceRepository {
         (synthesizing one from the .psm1 if none is committed), and returns the module's name and version.
         Used internally by Install-GitResourceRepository and Update-GitResourceRepository to inspect a
         repository's module before deciding whether to install or update it.
+
+        When installed via Install-ModuleInfo, only PowerShell-related files are kept; non-essential
+        repository artifacts (git metadata, build directories, etc.) are filtered out.
     .PARAMETER ProjectUri
         One or more git repository URLs to inspect.
     .PARAMETER Name
