@@ -116,6 +116,7 @@ function Get-GitResourceRepository {
                 Name = $ModuleName
                 Version = $ModuleVersion
                 LocalPath = if ($KeepTempCopy) {$tempDir} else {$null}
+                ManifestPath = if ($KeepTempCopy) {Split-Path $psd1.FullName -Parent} else {$null}
                 Root = ((Split-Path $psd1.FullName -Parent) -eq $tempDir)
                 SameName = ($psd1.BaseName -eq $ModuleName)
                 ManifestName = $psd1.BaseName

@@ -32,9 +32,10 @@ function Install-ModuleInfo {
         New-Item $TargetDir -ItemType Directory -Force | Out-Null
     }
     
-    # copy module - excluding repository artifacts
+    # copy module from manifest directory (handles non-root manifests)
     Write-Verbose -Message "$(Get-Date -f T)   installing module to $TargetDir"
-    Copy-Item "$($ModuleInfo.LocalPath)/*" $TargetDir -Force -Recurse | Out-Null
+    $CopySource = if ($ModuleInfo.ManifestPath) {$ModuleInfo.ManifestPath} else {$ModuleInfo.LocalPath}
+    Copy-Item "$CopySource/*" $TargetDir -Force -Recurse | Out-Null
 
     # clean up non-PowerShell artifacts
     $ExcludeDirs = @('.git', '.github', '.gitignore', 'node_modules', '.vscode', '.idea', 'build', 'dist', '.env*', '*.log', '*.tmp')
